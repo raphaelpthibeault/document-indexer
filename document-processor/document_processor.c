@@ -1,5 +1,5 @@
 #include <document_processor.h>
-#include "wrapper.h"
+#include <wrapper.h>
 #include <string.h>
 #include <text_extractor.h>
 #include <text_tokenizer.h>
