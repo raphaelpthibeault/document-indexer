@@ -1,8 +1,8 @@
-#include <document_processor.h>
-#include <wrapper.h>
+#include "document_processor.h"
+#include "wrapper.h"
 #include <string.h>
-#include <text_extractor.h>
-#include <text_tokenizer.h>
+#include "text_extractor.h"
+#include "text_tokenizer.h"
 
 
 Document Document_new(const char *path, const char *text) {

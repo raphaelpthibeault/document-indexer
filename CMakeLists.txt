@@ -7,6 +7,7 @@ include_directories(
         text-extractor
         text-tokenizer
         indexer
+        document-processor
         util
 )
 
@@ -19,6 +20,6 @@ add_executable(document_indexer main.c
         text-tokenizer/text_tokenizer.h
         indexer/indexer.c
         indexer/indexer.h
-        indexer/document_processor.c
-        indexer/document_processor.h
+        document-processor/document_processor.c
+        document-processor/document_processor.h
 )
