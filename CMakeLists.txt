@@ -17,5 +17,6 @@ add_executable(document_indexer main.c
         util/wrapper.c
         text-tokenizer/text_tokenizer.c
         text-tokenizer/text_tokenizer.h
-        indexer/text_indexer.c
-        indexer/text_indexer.h)
+        indexer/indexer.c
+        indexer/indexer.h
+)

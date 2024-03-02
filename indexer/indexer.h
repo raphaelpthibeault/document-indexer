@@ -1,5 +1,5 @@
-#ifndef DOCUMENT_INDEXER_TEXT_INDEXER_H
-#define DOCUMENT_INDEXER_TEXT_INDEXER_H
+#ifndef DOCUMENT_INDEXER_INDEXER_H
+#define DOCUMENT_INDEXER_INDEXER_H
 #include <stdlib.h>
 
 
@@ -46,4 +46,4 @@ OccurrenceList Index_search(Index index, char *key);
 
 
 
-#endif //DOCUMENT_INDEXER_TEXT_INDEXER_H
+#endif //DOCUMENT_INDEXER_INDEXER_H

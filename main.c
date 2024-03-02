@@ -2,7 +2,7 @@
 #include <text_extractor.h>
 #include <text_tokenizer.h>
 #include <wrapper.h>
-#include <text_indexer.h>
+#include <indexer.h>
 
 int main(int argc, char *argv[]) {
 

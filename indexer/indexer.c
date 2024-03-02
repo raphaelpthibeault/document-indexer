@@ -1,4 +1,4 @@
-#include <text_indexer.h>
+#include <indexer.h>
 #include <wrapper.h>
 #include <text_tokenizer.h>
 #include <string.h>
