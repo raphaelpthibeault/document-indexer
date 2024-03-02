@@ -23,7 +23,7 @@ void TokenList_add(TokenList list, Token token) {
     list->tokens[list->size++] = token;
 }
 
-Token Token_new(const char *value, size_t position) {
+Token Token_new(char *value, size_t position) {
     Token token = Malloc(sizeof(struct SToken));
     token->value = Malloc(strlen(value) + 1);
     strcpy(token->value, value);
@@ -55,10 +55,14 @@ TokenList tokenize(const char *text) {
             while (text[i] != '\0' && !isspace((unsigned char)text[i])) {
                 i++;
             }
+
             char *value = Malloc(i - start + 1);
-            strncpy(value, text + start, i - start);
+            for (size_t j = start; j < i; ++j)
+                value[j - start] = tolower((unsigned char) text[j]);
+
             value[i - start] = '\0';
             TokenList_add(list, Token_new(value, start));
+            FREE_AND_NULL(value); // value is copied into the token
         }
     }
     return list;

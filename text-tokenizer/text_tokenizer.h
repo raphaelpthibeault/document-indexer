@@ -17,7 +17,7 @@ typedef struct STokenList {
 
 TokenList TokenList_new(size_t capacity);
 void TokenList_add(TokenList list, Token token);
-Token Token_new(const char *value, size_t position);
+Token Token_new(char *value, size_t position);
 void Token_free(Token token);
 void TokenList_free(TokenList list);
 TokenList tokenize(const char *text);
