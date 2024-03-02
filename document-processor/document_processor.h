@@ -6,6 +6,7 @@
 typedef struct SDocument {
     char *path;
     char *text;
+    size_t id;
 } *Document;
 
 typedef struct SDocumentList {

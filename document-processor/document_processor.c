@@ -11,6 +11,7 @@ Document Document_new(const char *path, const char *text) {
     strcpy(document->path, path);
     document->text = Malloc(strlen(text) + 1);
     strcpy(document->text, text);
+    document->id = -1;
     return document;
 }
 
@@ -41,6 +42,7 @@ void DocumentList_add_from_document(DocumentList list, Document document) {
         st_mult(list->capacity, 2);
         list->documents = Realloc(list->documents, st_mult(list->capacity, sizeof(Document)));
     }
+    document->id = list->size;
     list->documents[list->size++] = document;
 }
 
