@@ -17,6 +17,8 @@ char *extract_raw_text(const char *file_path) {
     } else {
         app_error("Unsupported file type");
     }
+
+    return NULL;
 }
 
 char *parse_txt_file(const char *file_path) {
