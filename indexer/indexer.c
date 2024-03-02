@@ -1,7 +1,12 @@
 #include <indexer.h>
 #include <wrapper.h>
-#include <text_tokenizer.h>
 #include <string.h>
+
+
+void Index_insert_fixup(Index index, Node new_node);
+void left_rotate(Index index, Node node);
+void right_rotate(Index index, Node node);
+
 
 Occurrence Occurrence_new(size_t document_id, size_t position) {
     Occurrence occurrence = Malloc(sizeof(struct SOccurrence));
@@ -91,6 +96,8 @@ void Index_insert(Index index, char *key, size_t document_id, size_t position) {
     } else {
         parent->right = new_node;
     }
+
+    Index_insert_fixup(index, new_node);
 }
 
 OccurrenceList Index_search(Index index, char *key) {
@@ -109,4 +116,96 @@ OccurrenceList Index_search(Index index, char *key) {
 }
 
 /* TODO Index_search_fuzzy */
+
+
+void Index_print_node(Node node, int depth) {
+    if (node != NULL) {
+        Index_print_node(node->right, depth + 1);
+        printf("%s\n", node->key);
+        Index_print_node(node->left, depth + 1);
+    }
+}
+
+void Index_print(Index index) {
+    printf("Index:\n");
+    Index_print_node(index->root, 0);
+    printf("\n");
+}
+
+
+
+void left_rotate(Index index, Node node) {
+    Node right = node->right;
+    node->right = right->left;
+    if (right->left != NULL) {
+        right->left->parent = node;
+    }
+    right->parent = node->parent;
+    if (node->parent == NULL) {
+        index->root = right;
+    } else if (node == node->parent->left) {
+        node->parent->left = right;
+    } else {
+        node->parent->right = right;
+    }
+    right->left = node;
+    node->parent = right;
+}
+
+void right_rotate(Index index, Node node) {
+    Node left = node->left;
+    node->left = left->right;
+    if (left->right != NULL) {
+        left->right->parent = node;
+    }
+    left->parent = node->parent;
+    if (node->parent == NULL) {
+        index->root = left;
+    } else if (node == node->parent->right) {
+        node->parent->right = left;
+    } else {
+        node->parent->left = left;
+    }
+    left->right = node;
+    node->parent = left;
+}
+
+void Index_insert_fixup(Index index, Node new_node) {
+    while (new_node->parent != NULL && new_node->parent->color == RED) {
+        if (new_node->parent == new_node->parent->parent->left) {
+            Node uncle = new_node->parent->parent->right;
+            if (uncle != NULL && uncle->color == RED) {
+                new_node->parent->color = BLACK;
+                uncle->color = BLACK;
+                new_node->parent->parent->color = RED;
+                new_node = new_node->parent->parent;
+            } else {
+                if (new_node == new_node->parent->right) {
+                    new_node = new_node->parent;
+                    left_rotate(index, new_node);
+                }
+                new_node->parent->color = BLACK;
+                new_node->parent->parent->color = RED;
+                right_rotate(index, new_node->parent->parent);
+            }
+        } else {
+            Node uncle = new_node->parent->parent->left;
+            if (uncle != NULL && uncle->color == RED) {
+                new_node->parent->color = BLACK;
+                uncle->color = BLACK;
+                new_node->parent->parent->color = RED;
+                new_node = new_node->parent->parent;
+            } else {
+                if (new_node == new_node->parent->left) {
+                    new_node = new_node->parent;
+                    right_rotate(index, new_node);
+                }
+                new_node->parent->color = BLACK;
+                new_node->parent->parent->color = RED;
+                left_rotate(index, new_node->parent->parent);
+            }
+        }
+    }
+    index->root->color = BLACK;
+}
 

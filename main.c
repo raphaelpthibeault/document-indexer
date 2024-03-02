@@ -14,10 +14,24 @@ int main(int argc, char *argv[]) {
 
 
     Document document = Document_get_from_file(argv[1]);
-    printf("Document path: %s\n", document->path);
-    printf("Document text: %s\n", document->text);
 
-    Document_free(document);
+    DocumentList list = DocumentList_new(1);
+    DocumentList_add_from_document(list, document);
+
+    Index index = Index_new();
+    for (size_t i = 0; i < list->size; i++) {
+        Document doc = list->documents[i];
+        char *text = doc->text;
+        TokenList tokens = tokenize(text);
+        for (size_t j = 0; j < tokens->size; j++) {
+            Token token = tokens->tokens[j];
+            Index_insert(index, token->value, doc->id, token->position);
+        }
+
+        TokenList_free(tokens);
+    }
+
+    Index_print(index);
 
     return 0;
 }

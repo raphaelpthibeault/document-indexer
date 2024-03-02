@@ -43,7 +43,7 @@ Index Index_new(void);
 void Index_free(Index index);
 void Index_insert(Index index, char *key, size_t document_id, size_t position);
 OccurrenceList Index_search(Index index, char *key);
-
+void Index_print(Index index);
 
 
 #endif //DOCUMENT_INDEXER_INDEXER_H
