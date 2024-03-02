@@ -1,11 +1,12 @@
 cmake_minimum_required(VERSION 3.27)
 project(document_indexer C)
 
-set(CMAKE_C_STANDARD 23)
+set(CMAKE_C_STANDARD 11)
 
 include_directories(
         text-extractor
         text-tokenizer
+        indexer
         util
 )
 
@@ -15,4 +16,6 @@ add_executable(document_indexer main.c
         util/util.h
         util/wrapper.c
         text-tokenizer/text_tokenizer.c
-        text-tokenizer/text_tokenizer.h)
+        text-tokenizer/text_tokenizer.h
+        indexer/text_indexer.c
+        indexer/text_indexer.h)

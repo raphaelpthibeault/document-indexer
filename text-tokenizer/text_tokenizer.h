@@ -15,13 +15,14 @@ typedef struct STokenList {
     size_t capacity;
 } *TokenList;
 
-TokenList TokenList_new(size_t capacity);
-void TokenList_add(TokenList list, Token token);
+
 Token Token_new(char *value, size_t position);
 void Token_free(Token token);
+
+TokenList TokenList_new(size_t capacity);
 void TokenList_free(TokenList list);
+void TokenList_add(TokenList list, Token token);
+
 TokenList tokenize(const char *text);
-
-
 
 #endif //DOCUMENT_INDEXER_TEXT_TOKENIZER_H

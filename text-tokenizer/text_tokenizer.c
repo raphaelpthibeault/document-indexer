@@ -9,7 +9,7 @@ static void skip_delimiters(const char *text, size_t *i);
 
 TokenList TokenList_new(size_t capacity) {
     TokenList list = Malloc(sizeof(struct STokenList));
-    list->tokens = Malloc(capacity * sizeof(Token));
+    list->tokens = Malloc(st_mult(capacity, sizeof(Token)));
     list->size = 0;
     list->capacity = capacity;
     return list;
@@ -18,7 +18,7 @@ TokenList TokenList_new(size_t capacity) {
 void TokenList_add(TokenList list, Token token) {
     if (list->size == list->capacity) {
         list->capacity *= 2;
-        list->tokens = Realloc(list->tokens, list->capacity * sizeof(Token));
+        list->tokens = Realloc(list->tokens, st_mult(list->capacity, sizeof(Token)));
     }
     list->tokens[list->size++] = token;
 }
@@ -52,7 +52,7 @@ TokenList tokenize(const char *text) {
         skip_delimiters(text, &i);
         if (text[i] != '\0') {
             size_t start = i;
-            while (text[i] != '\0' && !isspace((unsigned char)text[i])) {
+            while (text[i] != '\0' && !(isspace((unsigned char)text[i]) || (ispunct((unsigned char)text[i]) && text[i] != '\''))) {
                 i++;
             }
 
@@ -68,7 +68,6 @@ TokenList tokenize(const char *text) {
     return list;
 }
 
-// delimiters are considered to be any whitespace or punctuation character
 static void skip_delimiters(const char *text, size_t *i) {
     if (!text || !i) {
         return;
