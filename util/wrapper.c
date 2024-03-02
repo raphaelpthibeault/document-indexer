@@ -1,5 +1,6 @@
 #include <wrapper.h>
 #include <error_handling.h>
+#include <string.h>
 
 /* static function declarations */
 static void check_memory_limit(size_t size);
@@ -63,6 +64,64 @@ size_t Fread(void *ptr, size_t size, size_t nmemb, FILE *stream)
         unix_error("Fread error");
     return n;
 }
+
+DIR *Opendir(const char *name)
+{
+    DIR *dir;
+    if ((dir = opendir(name)) == NULL)
+        unix_error("Opendir error");
+    return dir;
+}
+
+void Closedir(DIR *dir)
+{
+    if (closedir(dir) < 0)
+        unix_error("Closedir error");
+}
+
+FilenameList FilenameList_new(size_t capacity) {
+    FilenameList list = Malloc(sizeof(struct SFilenameList));
+    list->filenames = Malloc(st_mult(capacity, sizeof(char *)));
+    list->size = 0;
+    list->capacity = capacity;
+    return list;
+}
+
+void FilenameList_free(FilenameList list) {
+    for (size_t i = 0; i < list->size; i++) {
+        FREE_AND_NULL(list->filenames[i]);
+    }
+    FREE_AND_NULL(list->filenames);
+    FREE_AND_NULL(list);
+}
+
+void FilenameList_add(FilenameList list, const char *filename) {
+    if (list->size == list->capacity) {
+        list->capacity *= 2;
+        list->filenames = Realloc(list->filenames, st_mult(list->capacity, sizeof(char *)));
+    }
+    list->filenames[list->size] = Malloc(strlen(filename) + 1);
+    strcpy(list->filenames[list->size], filename);
+    list->size++;
+}
+
+FilenameList FilenameList_get_from_directory(const char *path) {
+    FilenameList list = FilenameList_new(10); // arbitrary initial capacity
+    DIR *dir = Opendir(path);
+
+    struct dirent *entry;
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+            continue;
+        }
+        FilenameList_add(list, entry->d_name);
+    }
+
+    Closedir(dir);
+
+    return list;
+}
+
 
 /* STATIC FUNCTIONS */
 static void check_memory_limit(size_t size) {

@@ -21,11 +21,23 @@ static inline bool will_mult_overflow(size_t a, size_t b) {
     return a > ULONG_MAX / b;
 }
 
+static inline bool will_add_overflow(size_t a, size_t b) {
+    return a > ULONG_MAX - b;
+}
+
 static inline size_t st_mult(size_t a, size_t b) {
     if (will_mult_overflow(a, b)) {
         app_error("st_mult: overflow");
     }
     return a * b;
 }
+
+static inline size_t st_add(size_t a, size_t b) {
+    if (will_add_overflow(a, b)) {
+        app_error("st_add: overflow");
+    }
+    return a + b;
+}
+
 
 #endif // UTIL_H
