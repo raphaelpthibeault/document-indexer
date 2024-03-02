@@ -1,0 +1,1 @@
+A document indexer and search engine for a given directory of documents. The indexer will parse the documents and create an index of the words in the documents. The search engine will take a query, perform a fuzzy search on the index and return the most relevant documents.
