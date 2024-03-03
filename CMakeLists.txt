@@ -11,7 +11,7 @@ include_directories(
         util
 )
 
-add_executable(document_indexer main.c
+add_executable(document_indexer
         text-extractor/text_extractor.c
         util/error_handling.c
         util/util.h
